@@ -2,27 +2,26 @@
 
 ## Proposed Folder Structure
 
-CatalogFlow/
-├─ alembic/
-│ └─ versions/
-├─ app/
-│ ├─ core/
-│ ├─ database/
-│ ├─ models/
-│ ├─ crud/
-│ ├─ api/
-│ │ └─ v1/
-│ │ ├─ routers/
-│ │ ├─ schemas/
-│ │ └─ services/
-│ ├─ utils/
-│ ├─ tasks/
-│ └─ tests/
-├─ docs/
-├─ .env
-├─ requirements.txt
-└─ README.md
-
+```CatalogFlow/
+├─ alembic/ # Alembic migrations
+│ └─ versions/ # Migration files
+├─ app/ # Main application code
+│ ├─ core/ # App-level configs, constants, settings
+│ ├─ database/ # DB layer (sync/async, session, Base)
+│ ├─ models/ # SQLAlchemy ORM models
+│ ├─ crud/ # Database CRUD functions for each model
+│ ├─ api/ # FastAPI API layer
+│ │ └─ v1/ # Versioning for API
+│ │ ├─ routers/ # Route definitions per entity
+│ │ ├─ schemas/ # Pydantic schemas for validation & serialization
+│ │ └─ services/ # Business logic, helper functions for routes
+│ ├─ utils/ # Utility functions/helpers
+│ ├─ tasks/ # Background jobs, Celery tasks, etc.
+│ └─ tests/ # Unit and integration tests
+├─ docs/ # Documentation (e.g., architecture, scope)
+├─ .env # Environment variables
+├─ requirements.txt # Python dependencies
+└─ README.md # Project README
 
 ---
 
