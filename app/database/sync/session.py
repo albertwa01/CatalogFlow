@@ -4,8 +4,7 @@ from sqlalchemy.orm import sessionmaker
 from app.core.config import settings
 
 # Database URL from .env
-DATABASE_URL = f"postgresql://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}" \
-               f"@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+DATABASE_URL =settings.DATABASE_URL
 
 # Create engine with connection pooling
 engine = create_engine(

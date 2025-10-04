@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from app.api.v1.routers import health
 from app.database.sync.session import engine
 from contextlib import asynccontextmanager
+from app.core.config import settings
 
 
 @asynccontextmanager
@@ -41,10 +42,17 @@ async def lifespan(app: FastAPI):
     print("App is shutting down")
     
     
-app = FastAPI(title="CatalogFlow", version="0.1.0", lifespan=lifespan)
+    
+app = FastAPI(
+    title=settings.PROJECT_NAME,
+    version=settings.PROJECT_VERSION,
+    lifespan=lifespan,
+    debug=settings.APP_ENV == "development"
+)
+
 # Include routers
 app.include_router(health.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to CatalogFlow"}
+    return {"message": f"Welcome to {settings.PROJECT_NAME}"}
