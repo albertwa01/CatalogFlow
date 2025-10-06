@@ -9,7 +9,7 @@ DATABASE_URL =settings.DATABASE_URL
 # Create engine with connection pooling
 engine = create_engine(
     DATABASE_URL,
-    echo=True,        # Log SQL queries for debugging
+    echo=False,        # Log SQL queries for debugging
     pool_size=10,
     max_overflow=20
 )

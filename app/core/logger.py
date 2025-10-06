@@ -32,35 +32,35 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
 
 
 def setup_logger(name: str = "app", level=logging.INFO, log_to_db: bool = False):
-    """Setup JSON logger with file rotation, console output, and optional DB logging."""
     logger = logging.getLogger(name)
     logger.setLevel(level)
 
     if not logger.handlers:
         log_file = get_log_file()
 
-        # File handler with daily rotation
-        file_handler = TimedRotatingFileHandler(
-            log_file, when="midnight", backupCount=7, encoding="utf-8"
-        )
-
-        # Console handler
-        console_handler = logging.StreamHandler(sys.stdout)
-
-        formatter = CustomJsonFormatter("%(timestamp)s %(level)s %(message)s")
-        file_handler.setFormatter(formatter)
-        console_handler.setFormatter(formatter)
-
+        # File handler with JSON
+        file_handler = TimedRotatingFileHandler(log_file, when="midnight", backupCount=7, encoding="utf-8")
+        file_formatter = CustomJsonFormatter("%(timestamp)s %(name)s %(level)s %(message)s")
+        file_handler.setFormatter(file_formatter)
         logger.addHandler(file_handler)
+
+        # Console handler with human-readable format
+        console_handler = logging.StreamHandler(sys.stdout)
+        console_formatter = logging.Formatter(
+            "%(levelname)s: %(asctime)s - %(name)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S"
+        )
+        console_handler.setFormatter(console_formatter)
         logger.addHandler(console_handler)
 
         # Optional DB handler
         if log_to_db:
             db_handler = DBHandler()
-            db_handler.setFormatter(formatter)
+            db_handler.setFormatter(file_formatter)
             logger.addHandler(db_handler)
 
     return logger
+
 
 
 # Custom log level for execution
