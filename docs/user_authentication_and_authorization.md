@@ -52,6 +52,7 @@
 __table_args__ = (
     UniqueConstraint("team_id", "user_id", name="uq_team_user"),
 )
+```
 
 ### Team-Member Integrity
 
