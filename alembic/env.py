@@ -12,6 +12,7 @@ from app.core.config import settings
 #importing created model 
 from app.models.dummy import Dummy
 from app.models.logs import Log
+from app.models.user import User,Team,TeamMember
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
