@@ -6,6 +6,7 @@ import sys
 from datetime import datetime
 from app.database.sync.session import get_db
 from app.models.logs import Log
+from app.core.logger_db_handler import DBHandler
 
 LOG_DIR = Path("logs")
 LOG_DIR.mkdir(exist_ok=True)
@@ -28,27 +29,6 @@ class CustomJsonFormatter(jsonlogger.JsonFormatter):
         # Include any extra dynamic fields
         if hasattr(record, "extra") and record.extra:
             log_record.update(record.extra)
-
-
-class DBHandler(logging.Handler):
-    """Custom handler to write logs to the database."""
-    def emit(self, record: logging.LogRecord):
-        try:
-            session = get_db()
-            log_entry = Log(
-                level=record.levelname,
-                message=record.getMessage(),
-                module=record.module,
-                func_name=record.funcName,
-                line_no=record.lineno,
-                extra=getattr(record, "extra", None)
-            )
-            session.add(log_entry)
-            session.commit()
-        except Exception as e:
-            print(f"Failed to log to DB: {e}")
-        finally:
-            session.close()
 
 
 def setup_logger(name: str = "app", level=logging.INFO, log_to_db: bool = False):

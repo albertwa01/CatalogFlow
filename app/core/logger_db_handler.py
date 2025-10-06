@@ -1,5 +1,5 @@
 import logging
-from app.database.sync.session import get_db
+from app.database.sync.session import SessionLocal
 from app.models.logs import Log
 import json
 
@@ -9,7 +9,7 @@ class DBHandler(logging.Handler):
     """
     def emit(self, record: logging.LogRecord):
         try:
-            session = get_db()
+            session = SessionLocal()
             log_entry = Log(
                 level=record.levelname,
                 message=record.getMessage(),
