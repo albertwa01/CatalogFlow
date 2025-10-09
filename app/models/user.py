@@ -49,7 +49,16 @@ class User(Base):
 
     # Relationships
     created_users = relationship("User", remote_side=[id])
-    memberships = relationship("TeamMember", back_populates="user")
+    memberships = relationship(
+        "TeamMember",
+        back_populates="user",
+        foreign_keys="TeamMember.user_id"
+    )
+    added_memberships = relationship(
+        "TeamMember",
+        back_populates="added_by_user",
+        foreign_keys="TeamMember.added_by"
+    )
 
     def __repr__(self):
         return f"<User(id={self.id}, email='{self.email}', role='{self.global_role.value}')>"
@@ -108,7 +117,16 @@ class TeamMember(Base):
 
     # Relationships
     team = relationship("Team", back_populates="members")
-    user = relationship("User", back_populates="memberships")
+    user = relationship(
+        "User",
+        back_populates="memberships",
+        foreign_keys=[user_id]
+    )
+    added_by_user = relationship(
+        "User",
+        back_populates="added_memberships",
+        foreign_keys=[added_by]
+    )
 
     def __repr__(self):
         return f"<TeamMember(team={self.team_id}, user={self.user_id}, role={self.role.value})>"

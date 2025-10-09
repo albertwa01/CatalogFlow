@@ -1,11 +1,15 @@
 from fastapi import FastAPI,Request
-from app.api.v1.routers import health
 from app.database.sync.session import engine
 from contextlib import asynccontextmanager
 from app.core.config import settings
 from app.core.logger import logger
 import time 
 from sqlalchemy import text
+
+
+#import all routes
+from app.api.v1.routers import health
+from app.api.v1.routers import auth
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -77,6 +81,7 @@ async def log_requests(request: Request, call_next):
 
 # Include routers
 app.include_router(health.router, prefix="/api/v1")
+app.include_router(auth.router, prefix="/api/v1")
 
 @app.get("/")
 def root():
